@@ -575,6 +575,17 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e678391621cfba54e969a97580ec7c2f, type: 2}
   - skillDatas:
     - {fileID: 11400000, guid: d522d070c66091645a3df25e6387d999, type: 2}
+  holdHeros:
+  - heroseName: 0
+    Level: 0
+  - heroseName: 2
+    Level: 0
+  - heroseName: 3
+    Level: 0
+  - heroseName: 4
+    Level: 0
+  - heroseName: 1
+    Level: 0
 --- !u!4 &210492427
 Transform:
   m_ObjectHideFlags: 0
@@ -2855,7 +2866,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 841302434}
   m_HandleRect: {fileID: 841302433}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 0.00000015258789
   m_Size: 0.6666667
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5544,12 +5555,6 @@ MonoBehaviour:
   - {fileID: 8191577384546497380, guid: 425ee9e414565654e8b878dba6c83941, type: 3}
   - {fileID: 8191577384546497380, guid: 2ecd5d1ab8422c24ab609a992f383c6e, type: 3}
   - {fileID: 8191577384546497380, guid: 1da84a248978bdb46b3c4eba4ee7ea7f, type: 3}
-  readyCharacters:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   startPos:
   - {fileID: 585808614}
   - {fileID: 744823850}

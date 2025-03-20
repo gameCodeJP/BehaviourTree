@@ -17,7 +17,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 09ac537f54c0b654685326079c95df1e
-  position: {x: -570, y: 210}
+  position: {x: -565.5177, y: 210.96428}
   children:
   - {fileID: -6056937287592520961}
   - {fileID: -2413634520453727041}
@@ -38,7 +38,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 3c005115eb2833d46a22a00d49fb2a4c
-  position: {x: 431, y: 615.49994}
+  position: {x: 420.87494, y: 473.00003}
   children:
   - {fileID: 2785439922306528396}
   - {fileID: -776820714758569192}
@@ -59,7 +59,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 016f7375ffe3216469d3cd8453b603ad
-  position: {x: 345.18167, y: 950.4999}
+  position: {x: 334.87494, y: 808}
   animationStateName: Die
   OnRepeat: 0
 --- !u!114 &-7794857452781910259
@@ -79,7 +79,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: e4044ec9ea47064439fdf7f2ecc0b361
-  position: {x: -1323.0002, y: 770.85}
+  position: {x: -1292.4958, y: 666.66003}
   children:
   - {fileID: 2264342883733821087}
   - {fileID: -810635483244486401}
@@ -100,7 +100,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 8e0a38d624f7f2140bcda0b02d21e71d
-  position: {x: -934.3214, y: 749.9999}
+  position: {x: -903.4959, y: 645.66003}
   children:
   - {fileID: -4049357896625927020}
   - {fileID: 4690968595057012930}
@@ -121,7 +121,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 0cc89f7f99146c5418eb9541a8a031b6
-  position: {x: -569, y: -4}
+  position: {x: -558, y: 5}
   child: {fileID: 1260321690256885183}
 --- !u!114 &-6056937287592520961
 MonoBehaviour:
@@ -140,7 +140,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 68b2d022c26638f438220461b1c35dd4
-  position: {x: -1020.32153, y: 420.99988}
+  position: {x: -989.496, y: 316.66}
   children:
   - {fileID: 9143072367999447354}
   - {fileID: -3304816730416319662}
@@ -167,7 +167,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 783659e391b24314d9cfe3623a8f1f4b
-  position: {x: 544.0608, y: 948.50006}
+  position: {x: 533.87506, y: 805.9999}
 --- !u!114 &-4539895516102832425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: d1fb8f2d4143cc547aae873138cc0f09
-  position: {x: -123.999985, y: 624}
+  position: {x: -134.12494, y: 480.99997}
   children:
   - {fileID: 4510628289393791962}
   - {fileID: 8455441354809884221}
@@ -206,7 +206,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: bff42b633f3f32f4baea971e790497ee
-  position: {x: -1004.0002, y: 908}
+  position: {x: -973.496, y: 803.66003}
 --- !u!114 &-3696465017943108027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +224,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: b1325c678c033164695b75946aaeda5d
-  position: {x: -433, y: 604}
+  position: {x: -402, y: 489}
 --- !u!114 &-3626979798331586506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +242,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 6c8f5a7d0041d4246b10a4277d791344
-  position: {x: 834.00006, y: 948.50006}
+  position: {x: 823.87506, y: 805.9999}
   animationStateName: Idle
   OnRepeat: 1
 --- !u!114 &-3304816730416319662
@@ -262,7 +262,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: e5631c29914fc1c45803f4b8e6fc80ed
-  position: {x: -1480.3214, y: 597.9999}
+  position: {x: -1453.4958, y: 492.66}
 --- !u!114 &-3095674165028772043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,7 +280,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 51ada5c005d0db743a36352d7a0980c1
-  position: {x: 133, y: 948}
+  position: {x: 122.87503, y: 805}
 --- !u!114 &-2836741500811136582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,7 +298,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 26fbed93bfa4a3247b16f0adf884c33a
-  position: {x: -789.32153, y: 597.9999}
+  position: {x: -758.4959, y: 493.66}
 --- !u!114 &-2413634520453727041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,7 +316,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: d10840abd2ebcf14eb11a4a2b6208978
-  position: {x: 170.00006, y: 467.49994}
+  position: {x: 159.87497, y: 324.99997}
   children:
   - {fileID: -4539895516102832425}
   - {fileID: -8306275184103240578}
@@ -337,7 +337,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 425260ba04fabfd489d405efb35c3969
-  position: {x: -1123.6006, y: 596.75}
+  position: {x: -1093.4958, y: 492.66}
   children:
   - {fileID: -7794857452781910259}
   - {fileID: -7370937031164754185}
@@ -358,7 +358,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 638b0dd2d2b24a1439553e9818b3f376
-  position: {x: -1224.3004, y: 903.40015}
+  position: {x: -1193.4958, y: 798.6599}
   animationStateName: Skill
   OnRepeat: 0
 --- !u!114 &-776820714758569192
@@ -378,7 +378,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: acd32b95938d35e4cb5e29dcb9c2503f
-  position: {x: 686.00006, y: 804.0001}
+  position: {x: 675.87506, y: 661}
   children:
   - {fileID: -4821880113517286362}
   - {fileID: -3626979798331586506}
@@ -443,7 +443,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 6f67356b3e4c5984aaaa089c0e62ca7f
-  position: {x: -564, y: 92}
+  position: {x: -559.5177, y: 92.96426}
   child: {fileID: -9046480659353627988}
 --- !u!114 &2264342883733821087
 MonoBehaviour:
@@ -462,7 +462,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 51aee4d37f8dd34448a8bd074b8f87ba
-  position: {x: -1401.0002, y: 908}
+  position: {x: -1370.4958, y: 803.66003}
 --- !u!114 &2785439922306528396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,7 +480,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: ee0b36977d6803e4f8c39790f9aef363
-  position: {x: 240.1817, y: 795.4999}
+  position: {x: 229.87495, y: 653}
   children:
   - {fileID: -3095674165028772043}
   - {fileID: -8267121092373656974}
@@ -501,7 +501,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 76c34623a16d17849b071b596cc3f963
-  position: {x: -258.09503, y: 788.5}
+  position: {x: -268.12497, y: 646}
 --- !u!114 &4690968595057012930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,7 +519,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 1446ade9e5806bd4cbbeed30d51f358e
-  position: {x: -809.80023, y: 911.0001}
+  position: {x: -779.49585, y: 806.6599}
   animationStateName: Attack
   OnRepeat: 0
 --- !u!114 &5496793993914358679
@@ -539,7 +539,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 3f0641eb59db39841acdc5d9b54641c7
-  position: {x: -1297.3214, y: 597.9999}
+  position: {x: -1266.4958, y: 493.66}
   animationStateName: Move
   OnRepeat: 1
 --- !u!114 &5509573207352819892
@@ -559,7 +559,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: d4ab1bb7647c8344a9d62606b6a25eea
-  position: {x: -956.3215, y: 597.9999}
+  position: {x: -925.496, y: 493.66}
   animationStateName: Move
   OnRepeat: 1
 --- !u!114 &7625885526738704474
@@ -579,7 +579,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 3db05b1ae19e94e4ab51414aa9a85eb2
-  position: {x: -616.3214, y: 595.9998}
+  position: {x: -585.4959, y: 491.66}
   animationStateName: Idle
   OnRepeat: 1
 --- !u!114 &8455441354809884221
@@ -599,7 +599,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 57b337e970627fe4899d9887369083e9
-  position: {x: 11.999997, y: 797}
+  position: {x: 1.875042, y: 653.9999}
   animationStateName: Victory
   OnRepeat: 1
 --- !u!114 &9143072367999447354
@@ -619,4 +619,4 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 9c759526901977741919da90174717b7
-  position: {x: -1661, y: 598}
+  position: {x: -1634.4961, y: 492.66}

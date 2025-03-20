@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.MPE;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -20,10 +22,10 @@ public class ReadySenter : MonoBehaviour
     //캐릭터 Base
     [SerializeField] GameObject[] characterBase;
 
-    [SerializeField] List<Information> readyCharacters = new();
     [SerializeField] Transform[] startPos;
-    [SerializeField] bool[] OnIndex;
-    public int characterCount = 0;
+    List<Information> readyCharacters = new ();
+    bool[] OnIndex = new bool[5];
+    int characterCount = 0;
 
     //UI
     [SerializeField] GameObject CharacterScrollUI;
@@ -32,22 +34,16 @@ public class ReadySenter : MonoBehaviour
 
     public void AddReadyCharacter(HeroseName name)
     {
-        HeroseStatData heroseStatData = DataManager.Instance().GetHeroseStatData((int)name);
-        Information CharacterInfo;
-
-        if (characterCount < 5)
-        {
-            //해당하는 prefab을 받는다.
-            GameObject Character = Instantiate(characterBase[(int)heroseStatData.HeroseName]);
-
-            CharacterInfo = Character.GetComponent<Information>();
-            readyCharacters[characterCount] = CharacterInfo;
-            ++characterCount;
-        }
-        else
+        // 최대 갯수 5캐릭터
+        if (characterCount == 5)
             return;
 
-        CharacterInfo.heroseDate = heroseStatData;
+        HeroseStatData heroseStatData = DataManager.Instance().GetHeroseStatData((int)name);
+        //해당하는 prefab을 받는다.
+        GameObject Character = Instantiate(characterBase[(int)heroseStatData.HeroseName]);
+        Information CharacterInfo = Character.GetComponent<Information>();
+
+        readyCharacters.Add(CharacterInfo);
         CharacterInfo.skillDatas.AddRange(DataManager.Instance().GetSkillDatas((int)name));
 
         //위치지정
@@ -60,73 +56,52 @@ public class ReadySenter : MonoBehaviour
                 CharacterInfo.transform.localRotation = Quaternion.Euler(0, -90, 0);
                 CharacterInfo.startRotation = Quaternion.Euler(0, -90, 0);
                 CharacterInfo.indexNum = i;
+                CharacterInfo.charcterArea = i < 2 ? Area.Front : Area.Back;
                 break;
             }
         }
+
+        ++characterCount;
     }
 
     public void ChracterChangePosition(int chracterNum, Transform changeStartPosObj)
     {
-        bool OnChracter = false;
-        int changeIndex = 0;
-
         //바꾸길 원하는 객체 검색
-        Information info = new();
-        for (int i = 0; i < readyCharacters.Count; ++i)
-        {
-            if (readyCharacters[i]!= null && readyCharacters[i].indexNum == chracterNum)
-            {
-                OnIndex[chracterNum] = false;
-                info = readyCharacters[i];
-                readyCharacters[i] = null;
-                break;
-            }
-        }
+        Information info;
+        info = readyCharacters[chracterNum];
 
-        //바꾸고 싶은위치 찾기
-        for (int i = 0; i < 5; ++i)
+        OnIndex[chracterNum] = false;
+        readyCharacters[chracterNum] = null;
+
+        int changeIndex = 0;
+        for (int i = 0; i < 5; ++i) //바꾸고 싶은위치 찾기
         {
             if (startPos[i] == changeStartPosObj)
             {
-                OnChracter = OnIndex[i];
                 changeIndex = i;
                 break;
             }
         }
 
         //객체가 있다면
-        if (OnChracter)
+        if (OnIndex[changeIndex])
         {
-            Information changedInfo = new();
-
-            for (int i = 0; i < readyCharacters.Count; ++i)
-            {
-                if (readyCharacters[i] != null && readyCharacters[i].indexNum == changeIndex)
-                {
-                    OnIndex[changeIndex] = false;
-                    changedInfo = readyCharacters[i];
-                    readyCharacters[i] = null;
-                    break;
-                }
-            }
-
-            OnIndex[chracterNum] = true;
-            readyCharacters[chracterNum] = null;
-            readyCharacters[chracterNum] = changedInfo;
-            changedInfo.startPos = startPos[chracterNum].position;
-            changedInfo.GetComponent<MouseEvent>().indexNum = chracterNum;
-            changedInfo.transform.position = startPos[chracterNum].position;
-            changedInfo.indexNum = chracterNum;
+            PlaceChraccter(chracterNum, readyCharacters[changeIndex]);
         }
 
-        //아 이거 진짜 아닌데
-        OnIndex[changeIndex] = true;
-        readyCharacters[changeIndex] = null;
-        readyCharacters[changeIndex] = info;
-        info.startPos = startPos[changeIndex].position;
-        info.GetComponent<MouseEvent>().indexNum = changeIndex;
-        info.transform.position = startPos[changeIndex].position;
-        info.indexNum = changeIndex;
+        PlaceChraccter(changeIndex, info);
+    }
+
+    public void PlaceChraccter(int idx, Information info)
+    {
+        OnIndex[idx] = true;
+        readyCharacters[idx] = info;
+
+        info.startPos = startPos[idx].position;
+        info.transform.position = startPos[idx].position;
+
+        info.GetComponent<MouseEvent>().indexNum = idx;
+        info.indexNum = idx;
     }
 
     public void OnStartPosCollider()

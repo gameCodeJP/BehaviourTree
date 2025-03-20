@@ -62,36 +62,36 @@ public class BattleManager : MonoBehaviour
         int ID = 0;
 
         //고유 번호 할당 및 playerType 지정
-        for (int i = 0; i < 5; ++i)
+        foreach (Information playerInfor in playerInfors)
         {
-            if (playerInfors[i] != null)
-            {
-                playerInfors[i].playerType = PlayerType.Player;
-                playerInfors[i].useEffect = effectManager.EffectEmerge;
-                playerInfors[i].useDamageValueEffect = damageEffectUI_Senter.DamageValueEffectEmerge;
-                playerInfors[i].playerDead = DeadChracter;
+            if (playerInfor == null)
+                continue;
 
-                //Delegate설정
-                Battle BattleComponent = playerInfors[i].GetComponent<Battle>();
-                BattleComponent.getTarget = GetTargets;
-                BattleComponent.cameraShaking = Camera.main.GetComponent<CameraController>().CameraShacking;
-                BattleComponent.battleMode = Camera.main.GetComponent<CameraController>().CameraBattleMode;
-                BattleComponent.cameraTarget = cameraTarget;
+            playerInfor.playerType = PlayerType.Player;
+            playerInfor.useEffect = effectManager.EffectEmerge;
+            playerInfor.useDamageValueEffect = damageEffectUI_Senter.DamageValueEffectEmerge;
+            playerInfor.playerDead = DeadChracter;
 
-                playerInfors[i].GetComponent<CharacterState>().CurState = State.Battle;
+            //Delegate설정
+            Battle BattleComponent = playerInfor.GetComponent<Battle>();
+            BattleComponent.getTarget = GetTargets;
+            BattleComponent.cameraShaking = Camera.main.GetComponent<CameraController>().CameraShacking;
+            BattleComponent.battleMode = Camera.main.GetComponent<CameraController>().CameraBattleMode;
+            BattleComponent.cameraTarget = cameraTarget;
 
-                if (i < 2) playerInfors[i].charcterArea = Area.Front;
-                else playerInfors[i].charcterArea = Area.Back;
+            playerInfor.GetComponent<CharacterState>().CurState = State.Battle;
 
-                playerInfors[i].ID = ID;
-                ++ID;
-            }
+            playerInfor.ID = ID;
+            ++ID;
         }
 
         while (playerInfors.Remove(null)) ;
 
         for (int i = 0; i < 5; ++i)
         {
+            if (enemyInfors[i] == null)
+                continue;
+
             enemyInfors[i].startRotation = Quaternion.Euler(0 , 90, 0);
             enemyInfors[i].transform.localRotation = Quaternion.Euler(0, 90, 0);
             enemyInfors[i].gameObject.SetActive(true);

@@ -8,13 +8,12 @@ public class CharacterChoiceCenter : MonoBehaviour
 
     private void Awake()
     {
-        HoldHeros[] holdHeros = GameManager.Instance.holdHeros;
+        HoldHeros[] holdHeros = DataManager.Instance().getHoldHeros;
 
         for (int i = 0; i < holdHeros.Length; ++i)
         {
             ChracterChoiceUI choiceUI = Instantiate(characterChoiceUI, this.transform).GetComponent<ChracterChoiceUI>();
-            choiceUI.Setting(holdHeros[i]);
-            choiceUI.createChracter = ReadySenter.Instance().AddReadyCharacter;
+            choiceUI.Setting(holdHeros[i], ReadySenter.Instance().AddReadyCharacter);
         }
     }
 }

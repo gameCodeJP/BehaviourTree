@@ -6,23 +6,22 @@ using UnityEngine.Events;
 
 public class ChracterChoiceUI : MonoBehaviour
 {
-    [SerializeField] Image backGround;
     [SerializeField] Image chracterSprite;
     [SerializeField] Text chracterName;
-    public HeroseName heroseName;
-    public DelegateFuction.CreateChracter createChracter;
-    public Event ClickEvent;
+    private HeroseName heroseName;
+    private UnityAction<HeroseName> choiceChracterEvent;
 
     //선택중인지를 판단할때 사용
     bool OnChoice;
 
-    public void Setting(HoldHeros holdHeros)
+    public void Setting(HoldHeros holdHeros, UnityAction<HeroseName> unityAction)
     {
         HeroseStatData heroseStatData = DataManager.Instance().GetHeroseStatData((int)holdHeros.heroseName);
-
+        
         chracterSprite.sprite = heroseStatData.HeroSprite;
         heroseName = heroseStatData.HeroseName;
-        chracterName.text = heroseStatData.HeroseName.ToString();  
+        chracterName.text = heroseStatData.HeroseName.ToString();
+        choiceChracterEvent = unityAction;
     }
 
     public void ClivkEvent()
@@ -30,7 +29,7 @@ public class ChracterChoiceUI : MonoBehaviour
         if (OnChoice == false)
         {
             OnChoice = true;
-            createChracter(heroseName);
+            choiceChracterEvent(heroseName);
         }
         else
         {

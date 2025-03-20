@@ -137,7 +137,6 @@ public class BehaviourTree : ScriptableObject
 
         return children;
     }
-
     public void Traverse(Node node, System.Action<Node> visiter)
     {
         if(node)
@@ -147,7 +146,6 @@ public class BehaviourTree : ScriptableObject
             children.ForEach((n) => Traverse(n, visiter));
         }
     }
-
     public BehaviourTree Clone(Information info, Transform transform)
     {
         BehaviourTree tree = Instantiate(this);

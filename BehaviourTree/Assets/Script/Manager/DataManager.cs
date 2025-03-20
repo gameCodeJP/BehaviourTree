@@ -24,6 +24,12 @@ public class DataManager : MonoBehaviour
 
     [SerializeField] HeroseStatData[] heroseStatDatas;
     [SerializeField] SkillDataStruct[] skillDatas;
+    [SerializeField] HoldHeros[] holdHeros;
+
+    public HoldHeros[] getHoldHeros
+    {
+        get { return holdHeros; }
+    }
 
     public HeroseStatData GetHeroseStatData(int heroIndex)
     {

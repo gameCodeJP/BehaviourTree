@@ -156,19 +156,19 @@ public class Information : MonoBehaviour
         switch (stat)
         {
             case Stat.STR:
-                finalValue = runTimeStat.STR;
+                finalValue = heroseDate.STR;
                 break;
             case Stat.INT:
-                finalValue = runTimeStat.INT;
+                finalValue = heroseDate.INT;
                 break;
             case Stat.AGI:
-                finalValue = runTimeStat.AGI;
+                finalValue = heroseDate.AGI;
                 break;
             case Stat.VLT:
-                finalValue = runTimeStat.VLT;
+                finalValue = heroseDate.VLT;
                 break;
             case Stat.LUK:
-                finalValue = runTimeStat.LUK;
+                finalValue = heroseDate.LUK;
                 break;
         }
 
@@ -225,17 +225,17 @@ public class Information : MonoBehaviour
 
         for (int i = 0; i < buffs.Count; ++i)
         {
-            if (buffs[i].buffStat == stat)
+            if (buffs[i].buffStat != stat)
+                continue;
+
+            switch (buffs[i].buffType)
             {
-                switch (buffs[i].buffType)
-                {
-                    case BuffType.Buff:
-                        buffValue += buffs[i].value;
-                        break;
-                    case BuffType.DeBuff:
-                        buffValue -= buffs[i].value;
-                        break;
-                }
+                case BuffType.Buff:
+                    buffValue += buffs[i].value;
+                    break;
+                case BuffType.DeBuff:
+                    buffValue -= buffs[i].value;
+                    break;
             }
         }
 

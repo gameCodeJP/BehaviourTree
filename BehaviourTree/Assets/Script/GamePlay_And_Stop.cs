@@ -15,6 +15,5 @@ public class GamePlay_And_Stop : MonoBehaviour
         GamePlay = !GamePlay;
         BattleManager.Instance.GamePlayAndStop(GamePlay);
         TextUI.text = GamePlay == true ? Stop : Play;
-
     }
 }

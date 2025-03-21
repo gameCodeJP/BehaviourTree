@@ -81,7 +81,7 @@ public class SkillNode : ActionNode
             OwnerBattle.cameraTarget.SetTarget(OwnerTransform);
         }
 
-        OwnerBattle.battleMode(true);
+        CameraManager.Instance.setBattleMode = true;
     }
 
     //근접공격 유형

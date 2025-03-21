@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50f6d97c21eae224ca4b887856862be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heroseDate: {fileID: 11400000, guid: 212785b9012eca547b7702355d982c58, type: 2}
+  heroseDate: {fileID: 11400000, guid: be43bf36a037cd14cbf28571328f1db9, type: 2}
   skillDatas: []
   playerType: 0
   runTimeStat:

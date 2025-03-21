@@ -30,8 +30,8 @@ public class BattleManager : MonoBehaviour
     public int enemyCount = 5;
 
     //PlayerData
-    [SerializeField] List<Information> playerInfors;
-    [SerializeField] List<Information> enemyInfors;
+    List<Information> playerInfos;
+    [SerializeField] List<Information> enemyInfos;
     public List<Information> allInformations = new();
     public Queue<int> turnPreferentially = new Queue<int>();
 
@@ -46,7 +46,6 @@ public class BattleManager : MonoBehaviour
     public GameObject loseUI;
 
     //EffectManager
-    [SerializeField] EffectManager effectManager;
     [SerializeField] DamageEffectUI_Senter damageEffectUI_Senter;
 
     [SerializeField] float TurnDelay;
@@ -56,77 +55,55 @@ public class BattleManager : MonoBehaviour
 
     public void GameStart(List<Information> playerCharacters)
     {
-        //준비된 정보받기
-        playerInfors = playerCharacters;
-
         int ID = 0;
 
         //고유 번호 할당 및 playerType 지정
-        foreach (Information playerInfor in playerInfors)
+        playerInfos = playerCharacters;
+        foreach (Information playerInfo in playerInfos)
         {
-            if (playerInfor == null)
+            if (playerInfo == null)
                 continue;
 
-            playerInfor.playerType = PlayerType.Player;
-            playerInfor.useEffect = effectManager.EffectEmerge;
-            playerInfor.useDamageValueEffect = damageEffectUI_Senter.DamageValueEffectEmerge;
-            playerInfor.playerDead = DeadChracter;
+            playerInfo.playerType = PlayerType.Player;
+            RegisterFunction(playerInfo, ID);
 
-            //Delegate설정
-            Battle BattleComponent = playerInfor.GetComponent<Battle>();
-            BattleComponent.getTarget = GetTargets;
-            BattleComponent.cameraShaking = Camera.main.GetComponent<CameraController>().CameraShacking;
-            BattleComponent.battleMode = Camera.main.GetComponent<CameraController>().CameraBattleMode;
-            BattleComponent.cameraTarget = cameraTarget;
-
-            playerInfor.GetComponent<CharacterState>().CurState = State.Battle;
-
-            playerInfor.ID = ID;
             ++ID;
         }
 
-        while (playerInfors.Remove(null)) ;
-
-        for (int i = 0; i < 5; ++i)
+        foreach (Information enemyInfo in enemyInfos)
         {
-            if (enemyInfors[i] == null)
+            if (enemyInfo == null)
                 continue;
 
-            enemyInfors[i].startRotation = Quaternion.Euler(0 , 90, 0);
-            enemyInfors[i].transform.localRotation = Quaternion.Euler(0, 90, 0);
-            enemyInfors[i].gameObject.SetActive(true);
-            enemyInfors[i].playerType = PlayerType.Enemy;
+            enemyInfo.playerType = PlayerType.Enemy;
+            RegisterFunction(enemyInfo, ID);
 
-            //Delegate 설정
-            enemyInfors[i].useEffect = effectManager.EffectEmerge;
-            enemyInfors[i].useDamageValueEffect = damageEffectUI_Senter.DamageValueEffectEmerge;
-            enemyInfors[i].playerDead = DeadChracter;
-
-            //BattleDelegate설정
-            Battle BattleComponent = enemyInfors[i].GetComponent<Battle>();
-            BattleComponent.getTarget = GetTargets;
-            BattleComponent.cameraShaking = Camera.main.GetComponent<CameraController>().CameraShacking;
-            BattleComponent.battleMode = Camera.main.GetComponent<CameraController>().CameraBattleMode;
-            BattleComponent.cameraTarget = cameraTarget;
-
-            enemyInfors[i].GetComponent<CharacterState>().CurState = State.Battle;
-
-            if (i < 2) enemyInfors[i].charcterArea = Area.Front;
-            else enemyInfors[i].charcterArea = Area.Back;
-
-            enemyInfors[i].ID = ID;
+            enemyInfo.ID = ID;
             ++ID;
         }
 
-        allInformations.AddRange(playerInfors);
-        allInformations.AddRange(enemyInfors);
+        allInformations.AddRange(playerInfos);
+        allInformations.AddRange(enemyInfos);
 
-        playerCount = playerInfors.Count;
-        enemyCount = enemyInfors.Count;
+        playerCount = playerInfos.Count;
+        enemyCount = enemyInfos.Count;
 
         GamePlayAndStop(true);
 
         NextTurn();
+    }
+
+    private void RegisterFunction(Information info, int id)
+    {
+        info.AddDeadEvent(() => DeadChracter(id));
+
+        //BattleDelegate설정
+        info.ID = id;
+        Battle BattleComponent = info.GetComponent<Battle>();
+        BattleComponent.getTarget = GetTargets;
+        BattleComponent.cameraTarget = cameraTarget;
+
+        info.GetComponent<CharacterState>().CurState = State.Battle;
     }
 
     public void WaitTurn()
@@ -194,7 +171,7 @@ public class BattleManager : MonoBehaviour
     public bool PossibleNextGame()
     {
         //한쪽 진영 전멸 시 게임종료
-        if (playerInfors.Count <= 0 || enemyInfors.Count <= 0) return false;
+        if (playerInfos.Count <= 0 || enemyInfos.Count <= 0) return false;
 
         return true;
     }
@@ -235,7 +212,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        if (playerInfors.Count == 0) loseUI.SetActive(true);
+        if (playerInfos.Count == 0) loseUI.SetActive(true);
         else winUI.SetActive(true);
 
         RestartButton.SetActive(true);
@@ -256,7 +233,7 @@ public class BattleManager : MonoBehaviour
 
     public Information[] GetTargets(PlayerType playertype)
     {
-        return playertype == PlayerType.Player ? playerInfors.ToArray() : enemyInfors.ToArray();
+        return playertype == PlayerType.Player ? playerInfos.ToArray() : enemyInfos.ToArray();
     }
 
     public void DeadChracter(int characterNum)
@@ -268,12 +245,12 @@ public class BattleManager : MonoBehaviour
         if (deadCharacter.playerType == PlayerType.Player)
         {
             --playerCount;
-            playerInfors.Remove(deadCharacter);
+            playerInfos.Remove(deadCharacter);
         }
         else
         {
             --enemyCount;
-            enemyInfors.Remove(deadCharacter);
+            enemyInfos.Remove(deadCharacter);
         }
 
         //Destroy(deadCharacter);
@@ -282,7 +259,7 @@ public class BattleManager : MonoBehaviour
     IEnumerator TrunDelayCoroutine(int NextChracterNum)
     {
         GamePlayAndStop(false);
-        Camera.main.GetComponent<CameraController>().CameraBattleMode(false);
+        Camera.main.GetComponent<CameraManager>().CameraBattleMode(false);
         yield return new WaitForSeconds(TurnDelay);
 
         //Camera.main.GetComponent<CameraController>().CameraBattleMode(true, allInformations[NextChracterNum].transform);

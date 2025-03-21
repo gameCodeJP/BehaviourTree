@@ -26,14 +26,10 @@ public class ChracterChoiceUI : MonoBehaviour
 
     public void ClivkEvent()
     {
-        if (OnChoice == false)
-        {
-            OnChoice = true;
-            choiceChracterEvent(heroseName);
-        }
-        else
-        {
-            OnChoice = false;
-        }
+        if (OnChoice)
+            return;
+
+        choiceChracterEvent(heroseName);
+        OnChoice = true;
     }
 }

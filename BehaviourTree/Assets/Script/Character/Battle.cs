@@ -21,14 +21,6 @@ public class Battle : MonoBehaviour
     public delegate Information[] GetTarget(PlayerType playerType);
     public GetTarget getTarget;
 
-    //Camera Delegate
-    public delegate void CameraShaking(float duration, float magnitude);
-    public CameraShaking cameraShaking;
-
-    //Camera Delegate
-    public delegate void CameraBattleMode(bool on);
-    public CameraBattleMode battleMode;
-
     //Camera Target Delegate
     public CameraTarget cameraTarget;
 
@@ -67,7 +59,7 @@ public class Battle : MonoBehaviour
             cameraTarget.SetTarget(transform);
         }
 
-        battleMode(true);
+         CameraManager.Instance.setBattleMode = true;
     }
 
      public void Attack()
@@ -326,7 +318,10 @@ public class Battle : MonoBehaviour
                 SkillEffect.ReStart();
             }
 
-            if(myInfo.skillDatas[myInfo.curSkillIndex].SkillType == SKILLTYPE.ATTACK) cameraShaking(0.15f, 1.2f);
+            if (myInfo.skillDatas[myInfo.curSkillIndex].SkillType == SKILLTYPE.ATTACK)
+            {
+                CameraManager.Instance.CameraShacking(0.15f, 1.2f);
+            }
         }
         else
         {
@@ -339,7 +334,7 @@ public class Battle : MonoBehaviour
                 AttackEffect.ReStart();
             }
 
-            cameraShaking(0.15f, 0.8f);
+            CameraManager.Instance.CameraShacking(0.15f, 0.8f);
         }
     }
 

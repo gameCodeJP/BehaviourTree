@@ -26,8 +26,9 @@ public class MouseRayCast : MonoBehaviour
                 if (mouseEvent.characterState.CurState != State.Ready)
                     return;
 
-                ReadySenter.Instance().OnStartPosCollider();
+                ReadyManager.Instance().OnStartPosCollider();
                 readyNum = mouseEvent.indexNum;
+
                 IsHold = true;
             }
         }
@@ -39,11 +40,11 @@ public class MouseRayCast : MonoBehaviour
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
                 Transform StartPosition = hit.transform;
-                ReadySenter.Instance().ChracterChangePosition(readyNum, StartPosition);
+                ReadyManager.Instance().ChracterChangePosition(readyNum, StartPosition);
             }
 
             //Collider다시 비활성화 
-            ReadySenter.Instance().OffStartPosCollider();
+            ReadyManager.Instance().OffStartPosCollider();
 
             IsHold = false;
         }

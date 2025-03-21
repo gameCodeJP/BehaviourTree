@@ -2,17 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
+    private static CameraManager _Instance;
+    public static CameraManager Instance
+    {
+        get
+        {
+            if (_Instance == null)
+            {
+                _Instance = FindObjectOfType(typeof(CameraManager)) as CameraManager;
+            }
+
+            return _Instance;
+        }
+    }
+
     public float shakeDuration;
     public float shakemagnitude;
     public Vector3 shakeStartPos;
 
     public Vector3 StartPos;
-    public bool battleMode;
     public Transform CameraTarget;
     public float distance;
     public float cameraSpeed;
+    private bool battleMode;
+    public bool setBattleMode
+    {
+        set { battleMode = value; }
+    }
 
     public void CameraShacking(float duration = 0.15f, float magnitude = 0.8f)
     {

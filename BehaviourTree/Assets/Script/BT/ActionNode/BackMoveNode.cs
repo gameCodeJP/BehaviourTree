@@ -11,7 +11,7 @@ public class BackMoveNode : ActionNode
     protected override void OnStart()
     {
         OwnerTransform.LookAt(Info.startPos);
-        OwnerBattle.battleMode(false);
+        CameraManager.Instance.setBattleMode = false;
     }
 
     protected override void OnStop()

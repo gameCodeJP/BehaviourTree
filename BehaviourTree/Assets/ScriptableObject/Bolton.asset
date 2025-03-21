@@ -15,8 +15,8 @@ MonoBehaviour:
   heroseName: 1
   heroseClass: 0
   heroseType: 1
-  heroseFraction: 0
   heroSprite: {fileID: 21300000, guid: 28136f21e0ba5d7459716c3b31731974, type: 3}
+  attackType: 1
   hp: 160
   mp: 50
   strong: 53

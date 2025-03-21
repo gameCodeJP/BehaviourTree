@@ -13,7 +13,7 @@ public class CharacterChoiceCenter : MonoBehaviour
         for (int i = 0; i < holdHeros.Length; ++i)
         {
             ChracterChoiceUI choiceUI = Instantiate(characterChoiceUI, this.transform).GetComponent<ChracterChoiceUI>();
-            choiceUI.Setting(holdHeros[i], ReadySenter.Instance().AddReadyCharacter);
+            choiceUI.Setting(holdHeros[i], ReadyManager.Instance().AddReadyCharacter);
         }
     }
 }

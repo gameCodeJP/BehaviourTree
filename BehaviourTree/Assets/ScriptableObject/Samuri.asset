@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4edabf03c5ab51c49b677e75857ffa00, type: 3}
-  m_Name: Benson
+  m_Name: Samuri
   m_EditorClassIdentifier: 
   heroseName: 0
   heroseClass: 0
   heroseType: 0
-  heroseFraction: 0
   heroSprite: {fileID: 21300000, guid: e0fcb0e0cc3fc904b80c583a85fa168b, type: 3}
+  attackType: 1
   hp: 106
   mp: 50
   strong: 80

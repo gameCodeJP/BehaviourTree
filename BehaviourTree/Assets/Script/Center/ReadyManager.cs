@@ -5,15 +5,15 @@ using UnityEditor.MPE;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ReadySenter : MonoBehaviour
+public class ReadyManager : MonoBehaviour
 {
-    static private ReadySenter _instance;
+    static private ReadyManager _instance;
 
-    public static ReadySenter Instance()
+    public static ReadyManager Instance()
     {
         if(_instance == null)
         {
-            _instance = FindObjectOfType(typeof(ReadySenter)) as ReadySenter;
+            _instance = FindObjectOfType(typeof(ReadyManager)) as ReadyManager;
         }
 
         return _instance;

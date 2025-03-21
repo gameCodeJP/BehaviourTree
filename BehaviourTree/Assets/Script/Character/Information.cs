@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public enum PlayerType { Player, Enemy}
 public enum TargetType { BaseAttack, Skill };
@@ -69,16 +70,16 @@ public class Information : MonoBehaviour
 
     public List<MyBuff> buffs = new ();
 
-    //고유 번호
+    // 고유 번호
     public int ID = 0;
     enum Gender { Man,Girl}
     [SerializeField] Gender gender;
 
-    //자신의위치
+    // 자신의위치
     public Vector3 startPos;
     public Quaternion startRotation;
 
-    //자기 자리의 인덱스번호
+    // 자기 자리의 인덱스번호
     public int indexNum = 0;
 
     public bool IsHurt = false;
@@ -86,49 +87,38 @@ public class Information : MonoBehaviour
     public bool OnUpdate = true;
     public bool UseSkill = false;
 
-    //현재 실행중인 SkillIndex
+    // 현재 실행중인 SkillIndex
     public int curSkillIndex = 0;
 
-    //자신의 위치
+    // 자신의 위치
     public Area charcterArea;
 
-    //Buff
+    // Buff
     public GameObject buffUI_Base;
     [SerializeField] BuffManager buffUiManager;
 
-    //Hurt Delegate
-    public delegate void UseEffect(EffectName effectName, Vector3 start_Point, Vector3 forward);
-    public UseEffect useEffect;
-    public delegate void UseDamageValueEffect(SKILLTYPE skillType, Vector3 start_Point, Vector3 forward, int value);
-    public UseDamageValueEffect useDamageValueEffect;
-    //private UnityEvent HurtEvent;
-
-    //Dead Deleagete
-    public delegate void PlayerDeadEvent(int ID);
-    public PlayerDeadEvent playerDead;
-
-    public delegate void UiActive(bool on);
-    public UiActive uiActive;
-
-    //Event
+    // Event
     public UnityEvent DeadEvent = new();
+
+    // Animator
     private Animator playerAnimator;
 
     //Victory
     public bool victory = false;
 
-
     private void Start()
     {
-        //교체 예정
+        // 교체 예정
         startPos = transform.position;
 
-        //가지고 있는 정보를 토대로 스탯을 수정
+        // 가지고 있는 정보를 토대로 스탯을 수정
         SettingRunTimeStat();
         playerAnimator = GetComponent<Animator>();
+    }
 
-        DeadEvent.AddListener(() => playerDead(ID));
-        DeadEvent.AddListener(() => uiActive(false));
+    public void AddDeadEvent(UnityAction unityAction)
+    {
+        DeadEvent.AddListener(unityAction);
     }
 
     //스태틱값들을 미리 계산
@@ -244,7 +234,8 @@ public class Information : MonoBehaviour
 
     public void Hurt(int damage)
     {
-        if (IsDead == true) return;
+        if (IsDead == true) 
+            return;
 
         IsHurt = true;
         //방어력 검사 및 데미지 감소 버프들 확인
@@ -254,27 +245,28 @@ public class Information : MonoBehaviour
 
         if (runTimeStat.CurHP <= 0)
         {
-            //Event실행
             DeadEvent.Invoke();
-        }
-
-        if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hurt"))
-        {
-            playerAnimator.Play("Hurt");
         }
         else
         {
-            playerAnimator.Play("Hurt",0,0);
+            if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hurt"))
+            {
+                playerAnimator.Play("Hurt");
+            }
+            else
+            {
+                playerAnimator.Play("Hurt", 0, 0);
+            }
         }
 
-        useEffect(EffectName.Attack, transform.position, transform.forward);
-        useDamageValueEffect(SKILLTYPE.ATTACK, transform.position, transform.forward, damage);
+        EffectManager.Instance.TriggerEffect(EffectName.Attack, transform.position, transform.forward);
+        EffectManager.Instance.TriggerDamageEffect(SKILLTYPE.ATTACK, transform.position, transform.forward, damage);
     }
 
     public void Heal(int healValue)
     {
         runTimeStat.CurHP = runTimeStat.CurHP + healValue > runTimeStat.MaxHP ? runTimeStat.MaxHP : runTimeStat.CurHP + healValue;
-        useDamageValueEffect(SKILLTYPE.HELL, transform.position, transform.forward, healValue);
+        EffectManager.Instance.TriggerDamageEffect(SKILLTYPE.HELL, transform.position, transform.forward, healValue);
     }
 
     //애니메이션 이벤트로 호출함

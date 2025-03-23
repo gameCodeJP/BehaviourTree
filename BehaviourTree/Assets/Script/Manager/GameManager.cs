@@ -65,7 +65,9 @@ public class GameManager : MonoBehaviour
                 continue;
 
             playerInfo.playerType = PlayerType.Player;
-            RegisterFunction(playerInfo, ID++);
+            RegisterFunction(playerInfo, ID);
+
+            ++ID;
         }
 
         foreach (Character enemyInfo in enemyInfos)
@@ -74,7 +76,10 @@ public class GameManager : MonoBehaviour
                 continue;
 
             enemyInfo.playerType = PlayerType.Enemy;
-            RegisterFunction(enemyInfo, ID++);
+            RegisterFunction(enemyInfo, ID);
+
+            enemyInfo.ID = ID;
+            ++ID;
         }
 
         allInformations.AddRange(playerInfos);

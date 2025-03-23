@@ -20,7 +20,7 @@ public class NextTurnNode : ActionNode
 
     protected override State OnUpdate()
     {
-        BattleManager.Instance.NextChracter();
+        GameManager.Instance.NextChracter();
         Info.UseSkill = false;
         Info.curSkillIndex = 0;
         OwnerBattle.turnIndigate.SetActive(false);

@@ -18,7 +18,7 @@ public class TurnCheckNode : ActionNode
 
     protected override State OnUpdate()
     {
-        if(!Info.victory && BattleManager.Instance.TurnChracter == Info.ID)
+        if(!Info.victory && GameManager.Instance.TurnChracter == Info.ID)
         {
             //자신의 턴일 시
             OwnerBattle.turnIndigate.SetActive(true);

@@ -6,7 +6,7 @@ using TMPro;
 
 public class UI_Update : MonoBehaviour
 {
-    [SerializeField] Character ownerInfo;
+    [SerializeField] Information ownerInfo;
     [SerializeField] Image HP_Bar;
     [SerializeField] Image MP_Bar;
     [SerializeField] TextMeshProUGUI heroName;

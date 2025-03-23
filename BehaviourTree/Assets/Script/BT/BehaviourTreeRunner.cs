@@ -5,11 +5,11 @@ using UnityEngine;
 public class BehaviourTreeRunner : MonoBehaviour
 {
     public BehaviourTree tree;
-    Character info;
+    Information info;
 
     private void Start()
     {
-        info = GetComponent<Character>();
+        info = GetComponent<Information>();
         tree = tree.Clone(info, transform);
     }
 

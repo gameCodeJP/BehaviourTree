@@ -4,12 +4,12 @@ using UnityEngine;
 
 public abstract class Node : ScriptableObject
 { 
-    private Character _information;
+    private Information _information;
     private Transform _ownerTransform;
     public Battle _battle;
     public Animator playerAnimator;
 
-    public Character Info { get { return _information; } set { _information = value; } }
+    public Information Info { get { return _information; } set { _information = value; } }
     public Transform OwnerTransform { get { return _ownerTransform; } set { _ownerTransform = value; } }
     public Battle OwnerBattle { get { return _battle; } set { _battle = value; } }
 

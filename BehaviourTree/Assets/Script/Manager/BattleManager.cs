@@ -4,17 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class BattleManager : MonoBehaviour
 {
 
-    private static GameManager _Instance;
-    public static GameManager Instance
+    private static BattleManager _Instance;
+    public static BattleManager Instance
     {
         get
         {
             if (_Instance == null)
             {
-                _Instance = FindObjectOfType(typeof(GameManager)) as GameManager;
+                _Instance = FindObjectOfType(typeof(BattleManager)) as BattleManager;
             }
 
             return _Instance;
@@ -30,9 +30,9 @@ public class GameManager : MonoBehaviour
     public int enemyCount = 5;
 
     //PlayerData
-    List<Character> playerInfos;
-    [SerializeField] List<Character> enemyInfos;
-    public List<Character> allInformations = new();
+    List<Information> playerInfos;
+    [SerializeField] List<Information> enemyInfos;
+    public List<Information> allInformations = new();
     public Queue<int> turnPreferentially = new Queue<int>();
 
     //UI
@@ -53,13 +53,13 @@ public class GameManager : MonoBehaviour
     //CameraTarget
     [SerializeField] CameraTarget cameraTarget;
 
-    public void GameStart(List<Character> playerCharacters)
+    public void GameStart(List<Information> playerCharacters)
     {
         int ID = 0;
 
         //고유 번호 할당 및 playerType 지정
         playerInfos = playerCharacters;
-        foreach (Character playerInfo in playerInfos)
+        foreach (Information playerInfo in playerInfos)
         {
             if (playerInfo == null)
                 continue;
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
             ++ID;
         }
 
-        foreach (Character enemyInfo in enemyInfos)
+        foreach (Information enemyInfo in enemyInfos)
         {
             if (enemyInfo == null)
                 continue;
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
         NextTurn();
     }
 
-    private void RegisterFunction(Character info, int id)
+    private void RegisterFunction(Information info, int id)
     {
         info.AddDeadEvent(() => DeadChracter(id));
 
@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
         turnCheckUI.NextTurn();
 
         //buff Check구간
-        foreach (Character info in allInformations)
+        foreach (Information info in allInformations)
         {
             if(!info.IsDead)
             info.BuffCheck();
@@ -180,14 +180,14 @@ public class GameManager : MonoBehaviour
     {
         //LUK를 통한 순서 결정
         //오름차순으로 정렬
-        Character[] Infos = allInformations.ToArray();
+        Information[] Infos = allInformations.ToArray();
 
 
         for (int i = 0; i < Infos.Length - 1; ++i)
         {
             if (Infos[i].GetStatValue(Stat.LUK) < Infos[i + 1].GetStatValue(Stat.LUK))
             {
-                Character tempinfo = Infos[i];
+                Information tempinfo = Infos[i];
                 Infos[i] = Infos[i + 1];
                 Infos[i + 1] = tempinfo;
 
@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        foreach (Character info in Infos)
+        foreach (Information info in Infos)
         {
             turnPreferentially.Enqueue(info.ID); 
         }
@@ -204,7 +204,7 @@ public class GameManager : MonoBehaviour
 
     void GameOver()
     {
-        foreach (Character info in allInformations)
+        foreach (Information info in allInformations)
         {
             if (!info.IsDead)
             {
@@ -220,7 +220,7 @@ public class GameManager : MonoBehaviour
 
     public void GamePlayAndStop(bool on)
     {
-        foreach (Character info in allInformations)
+        foreach (Information info in allInformations)
         {
             info.OnUpdate = on;
         }
@@ -231,14 +231,14 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public Character[] GetTargets(PlayerType playertype)
+    public Information[] GetTargets(PlayerType playertype)
     {
         return playertype == PlayerType.Player ? playerInfos.ToArray() : enemyInfos.ToArray();
     }
 
     public void DeadChracter(int characterNum)
     {
-        Character deadCharacter = allInformations[characterNum];
+        Information deadCharacter = allInformations[characterNum];
         deadCharacter.IsDead = true;
 
         //해당 진영 List에서 삭제

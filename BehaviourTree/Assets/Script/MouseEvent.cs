@@ -12,7 +12,7 @@ public class MouseEvent : MonoBehaviour
     private void Start()
     {
         StartPos = transform.position;
-        indexNum = GetComponent<Character>().indexNum;
+        indexNum = GetComponent<Information>().indexNum;
     }
 
     private void OnMouseDrag()
@@ -34,7 +34,7 @@ public class MouseEvent : MonoBehaviour
     {
         if (CharacterNum == -1)
         {
-            CharacterNum = GetComponent<Character>().ID;
+            CharacterNum = GetComponent<Information>().ID;
         }
 
         /*if (characterState.CurState == State.Battle)
@@ -50,13 +50,13 @@ public class MouseEvent : MonoBehaviour
     //StatUI호출 및 Setting
     public void OnInfomation()
     {
-        GameManager.Instance.statExpantionUI.SetStatExplanation(CharacterNum);
-        GameManager.Instance.statExpantionUI.gameObject.SetActive(true);
+        BattleManager.Instance.statExpantionUI.SetStatExplanation(CharacterNum);
+        BattleManager.Instance.statExpantionUI.gameObject.SetActive(true);
     }
 
     //StatUI비활성화
     public void OffInfomation()
     {
-        GameManager.Instance.statExpantionUI.gameObject.SetActive(false);
+        BattleManager.Instance.statExpantionUI.gameObject.SetActive(false);
     }
 }

@@ -5,8 +5,8 @@ using UnityEngine.Events;
 
 public class Battle : MonoBehaviour
 {
-    [SerializeField] Character myInfo;
-    public List<Character> targets;
+    [SerializeField] Information myInfo;
+    public List<Information> targets;
 
     //공격 횟수
     public int AttackCombo = 0;
@@ -18,7 +18,7 @@ public class Battle : MonoBehaviour
     EffectController SkillEffect;
 
     //Target Delegate
-    public delegate Character[] GetTarget(PlayerType playerType);
+    public delegate Information[] GetTarget(PlayerType playerType);
     public GetTarget getTarget;
 
     //Camera Target Delegate
@@ -38,7 +38,7 @@ public class Battle : MonoBehaviour
     public void GetBaseAttackTarget()
     {
         targets.Clear();
-        Character[] infors = null;
+        Information[] infors = null;
 
         //상대 진영의 List를 반환
         infors = getTarget(myInfo.playerType == PlayerType.Player ? PlayerType.Enemy : PlayerType.Player);
@@ -89,7 +89,7 @@ public class Battle : MonoBehaviour
         SkillData skillData = myInfo.skillDatas[myInfo.curSkillIndex];
 
         //타켓설정 변수들
-        List<Character> oppositeCamps = new();
+        List<Information> oppositeCamps = new();
 
         //타켓 진영 및 범위를 지정하는 함수
         oppositeCamps = CheckArea(skillData);
@@ -143,9 +143,9 @@ public class Battle : MonoBehaviour
         //GetSkillEffectPosition();
     }
 
-    public List<Character> CheckArea(SkillData skillData)
+    public List<Information> CheckArea(SkillData skillData)
     {
-        List<Character> oppositeCamps = new();
+        List<Information> oppositeCamps = new();
 
         //타켓 진영을 선택
         if (skillData.TargetPlayerType == PlayerType.Enemy)
@@ -158,7 +158,7 @@ public class Battle : MonoBehaviour
         {
             case TargetArea.Self:
                 {
-                    List<Character> tempInfos = new();
+                    List<Information> tempInfos = new();
                     tempInfos.Add(myInfo);
                     oppositeCamps = tempInfos;
                 }
@@ -166,9 +166,9 @@ public class Battle : MonoBehaviour
 
             case TargetArea.FrontRow:
                 {
-                    List<Character> tempInfos = new();
+                    List<Information> tempInfos = new();
 
-                    foreach (Character info in oppositeCamps)
+                    foreach (Information info in oppositeCamps)
                     {
                         if (info.charcterArea == Area.Front) tempInfos.Add(info);
                     }
@@ -179,9 +179,9 @@ public class Battle : MonoBehaviour
 
             case TargetArea.BackRow:
                 {
-                    List<Character> tempInfos = new();
+                    List<Information> tempInfos = new();
 
-                    foreach (Character info in oppositeCamps)
+                    foreach (Information info in oppositeCamps)
                     {
                         if (info.charcterArea == Area.Back) tempInfos.Add(info);
                     }
@@ -198,7 +198,7 @@ public class Battle : MonoBehaviour
     public void UseSkill()
     {
         //다음게임으로 진행이 불가능 할 시 return;
-        if (!GameManager.Instance.PossibleNextGame())
+        if (!BattleManager.Instance.PossibleNextGame())
         {
             return;
         }
@@ -234,7 +234,7 @@ public class Battle : MonoBehaviour
         }
 
         //피격 당하는 대상. 데미지 관련 버프 Check
-        foreach (Character target in targets)
+        foreach (Information target in targets)
         {
             if (!target.IsDead)
             {
@@ -250,7 +250,7 @@ public class Battle : MonoBehaviour
     //SkillAction Delegate키워드 사용
     public void SKillHeal(SkillData skillData)
     {
-        foreach (Character target in targets)
+        foreach (Information target in targets)
         {
             target.Heal(myInfo.GetSkillValue());
             /*if (target.runTimeStat.CurHP + myInfo.GetSkillValue() > target.runTimeStat.MaxHP) target.runTimeStat.CurHP = target.runTimeStat.MaxHP;
@@ -265,7 +265,7 @@ public class Battle : MonoBehaviour
     {
         BuffSkillData buffData = (BuffSkillData)skillData;
 
-        foreach (Character target in targets)
+        foreach (Information target in targets)
         {
             int buffValue = 0;
 

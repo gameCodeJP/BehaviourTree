@@ -13,7 +13,7 @@ public class GamePlay_And_Stop : MonoBehaviour
     public void GamePlayOrStop()
     {
         GamePlay = !GamePlay;
-        GameManager.Instance.GamePlayAndStop(GamePlay);
+        BattleManager.Instance.GamePlayAndStop(GamePlay);
         TextUI.text = GamePlay == true ? Stop : Play;
     }
 }

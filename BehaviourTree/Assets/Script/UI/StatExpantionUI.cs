@@ -7,11 +7,11 @@ public class StatExpantionUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI StatText;
     GameObject target = null;
-    Character targetInfo = null;
+    Information targetInfo = null;
 
     public void SetStatExplanation(int num) 
     {
-        targetInfo = GameManager.Instance.allInformations[num];
+        targetInfo = BattleManager.Instance.allInformations[num];
 
         if (!targetInfo.IsDead)
         {

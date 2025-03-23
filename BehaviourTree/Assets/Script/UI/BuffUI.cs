@@ -21,7 +21,7 @@ public class BuffUI : MonoBehaviour
         buffinfo = buff;
 
         //배틀매니저에게 할당받음
-        expantionUI = GameManager.Instance.expantionUI;
+        expantionUI = BattleManager.Instance.expantionUI;
     }
 
     public bool CheckDuration()

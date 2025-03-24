@@ -146,7 +146,7 @@ public class BehaviourTree : ScriptableObject
             children.ForEach((n) => Traverse(n, visiter));
         }
     }
-    public BehaviourTree Clone(Information info, Transform transform)
+    public BehaviourTree Clone(Status info, Transform transform)
     {
         BehaviourTree tree = Instantiate(this);
         tree.rootNode = tree.rootNode.Clone();

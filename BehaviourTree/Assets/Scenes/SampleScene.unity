@@ -2855,7 +2855,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 841302434}
   m_HandleRect: {fileID: 841302433}
   m_Direction: 0
-  m_Value: 0.00000015258789
+  m_Value: -0.00000015258789
   m_Size: 0.6666667
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4927,23 +4927,22 @@ MonoBehaviour:
   TurnChracter: 0
   playerCount: 0
   enemyCount: 0
-  enemyInfos:
+  enemyStatus:
   - {fileID: 270821199}
   - {fileID: 1832454155}
   - {fileID: 121017769}
   - {fileID: 1191957619}
   - {fileID: 1867856126}
-  allInformations: []
+  allStatus: []
   expantionUI: {fileID: 1043182265}
   statExpantionUI: {fileID: 1162431467}
-  Playlog: {fileID: 0}
-  RestartButton: {fileID: 2013829876}
+  restartButton: {fileID: 2013829876}
   turnCheckUI: {fileID: 867347865}
   winUI: {fileID: 1410756033}
   loseUI: {fileID: 1123277513}
   damageEffectUI_Senter: {fileID: 0}
-  TurnDelay: 0.3
   cameraTarget: {fileID: 1072182116}
+  turnDelay: 0.3
 --- !u!4 &1650781690
 Transform:
   m_ObjectHideFlags: 0

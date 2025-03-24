@@ -39,7 +39,7 @@ public class SkillNode : ActionNode
         }
 
         //타켓이 한명이면
-        if (OwnerBattle.targets.Count == 1) OwnerTransform.LookAt(OwnerBattle.targets[0].transform.position); 
+        if (OwnerBattle.curTargets.Count == 1) OwnerTransform.LookAt(OwnerBattle.curTargets[0].transform.position); 
         else OwnerTransform.rotation = Info.startRotation;
 
         return State.Success;
@@ -95,8 +95,8 @@ public class SkillNode : ActionNode
                 SkillPos = Define.ActionFrontPoint;
                 break;
             case TargetArea.Single:
-                SkillPos = OwnerBattle.targets[0].transform.position +
-                   (OwnerTransform.position - OwnerBattle.targets[0].transform.position).normalized * 2f;
+                SkillPos = OwnerBattle.curTargets[0].transform.position +
+                   (OwnerTransform.position - OwnerBattle.curTargets[0].transform.position).normalized * 2f;
                 break;
             default:
                 SkillPos = Info.playerType == PlayerType.Player ? Define.EnemyMidPosition : Define.TeamMidPosition;

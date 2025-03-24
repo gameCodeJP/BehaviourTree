@@ -26,20 +26,19 @@ public class BattleManager : MonoBehaviour
     public int turn;
     public int TurnChracter;
 
-    public int playerCount = 5;
-    public int enemyCount = 5;
+    public int playerCount;
+    public int enemyCount;
 
     //PlayerData
-    List<Information> playerInfos;
-    [SerializeField] List<Information> enemyInfos;
-    public List<Information> allInformations = new();
+    List<Status> playerStatus = new();
+    [SerializeField] List<Status> enemyStatus = new();
+    public List<Status> allStatus = new();
     public Queue<int> turnPreferentially = new Queue<int>();
 
     //UI
     public ExpantionUI expantionUI;
     public StatExpantionUI statExpantionUI;
-    [SerializeField] Text Playlog;
-    [SerializeField] GameObject RestartButton;
+    [SerializeField] GameObject restartButton;
     [SerializeField] TurnCheck_UI turnCheckUI;
 
     public GameObject winUI;
@@ -48,62 +47,53 @@ public class BattleManager : MonoBehaviour
     //EffectManager
     [SerializeField] DamageEffectUI_Senter damageEffectUI_Senter;
 
-    [SerializeField] float TurnDelay;
-
     //CameraTarget
     [SerializeField] CameraTarget cameraTarget;
 
-    public void GameStart(List<Information> playerCharacters)
+    [SerializeField] float turnDelay;
+
+    public void GameStart(List<Status> playerStatusList)
     {
-        int ID = 0;
+        int id = 0;
+
+        playerStatus = playerStatusList;
 
         //고유 번호 할당 및 playerType 지정
-        playerInfos = playerCharacters;
-        foreach (Information playerInfo in playerInfos)
-        {
-            if (playerInfo == null)
-                continue;
+        RegisterStatus(ref playerStatus, ref id, PlayerType.Player);
+        RegisterStatus(ref enemyStatus, ref id, PlayerType.Enemy);
 
-            playerInfo.playerType = PlayerType.Player;
-            RegisterFunction(playerInfo, ID);
-
-            ++ID;
-        }
-
-        foreach (Information enemyInfo in enemyInfos)
-        {
-            if (enemyInfo == null)
-                continue;
-
-            enemyInfo.playerType = PlayerType.Enemy;
-            RegisterFunction(enemyInfo, ID);
-
-            enemyInfo.ID = ID;
-            ++ID;
-        }
-
-        allInformations.AddRange(playerInfos);
-        allInformations.AddRange(enemyInfos);
-
-        playerCount = playerInfos.Count;
-        enemyCount = enemyInfos.Count;
+        playerCount = playerStatus.Count;
+        enemyCount = enemyStatus.Count;
 
         GamePlayAndStop(true);
 
         NextTurn();
     }
 
-    private void RegisterFunction(Information info, int id)
+    private void RegisterStatus(ref List<Status> statusList, ref int id, PlayerType playerType)
     {
-        info.AddDeadEvent(() => DeadChracter(id));
+        foreach (Status status in statusList)
+        {
+            if (status == null)
+                continue;
 
-        //BattleDelegate설정
-        info.ID = id;
-        Battle BattleComponent = info.GetComponent<Battle>();
-        BattleComponent.getTarget = GetTargets;
-        BattleComponent.cameraTarget = cameraTarget;
+            int localInt = id;
 
-        info.GetComponent<CharacterState>().CurState = State.Battle;
+            status.ID = id;
+            status.playerType = playerType;
+            status.AddDeadEvent(() => DeadChracter(localInt));
+
+            //BattleDelegate설정
+            Battle BattleComponent = status.GetComponent<Battle>();
+            BattleComponent.getTarget = GetTargets;
+            BattleComponent.cameraTarget = cameraTarget;
+
+            status.GetComponent<CharacterState>().CurState = State.Battle;
+
+            ++id;
+        }
+
+        allStatus.AddRange(statusList);
     }
 
     public void WaitTurn()
@@ -123,80 +113,71 @@ public class BattleManager : MonoBehaviour
         turnCheckUI.NextTurn();
 
         //buff Check구간
-        foreach (Information info in allInformations)
+        foreach (Status status in allStatus)
         {
-            if(!info.IsDead)
-            info.BuffCheck();
+            if (status.IsDead)
+                continue;
+
+            status.BuffCheck();
         }
 
         //게임 진행이 가능한지 Check
-        if (PossibleNextGame())
+        if (PossibleNextGame() == false)
         {
-            SettingPreferentially();
-            NextChracter();
+            GameOver();
+            return;
         }
-        else GameOver();
+
+        SettingPreferentially();
+        NextChracter();
     }
 
     public void NextChracter()
     {
-        //양팀에 한명이라도 남아 있어야지 게임진행이 가능
-        if (PossibleNextGame())
+        //게임 진행이 가능한지 Check
+        if (PossibleNextGame() == false)
         {
-            //모든 순서가 끝나면 다음 턴으로 진행
-            while (turnPreferentially.Count != 0)
-            {
-                int NextChracterNum = turnPreferentially.Dequeue();
-
-                //죽은 객체라면 다음 순서로 넘김
-                if (allInformations[NextChracterNum].IsDead)
-                {
-                    continue;
-                }
-                else
-                {
-                    StartCoroutine(TrunDelayCoroutine(NextChracterNum));
-                    return;
-                }
-            }
+            NextTurn();
+            return;
         }
 
-        /////////////////////////////////////////////
-        ///순서를 기다리게 할 함수 구현예정
-        /////////////////////////////////////////////
- 
-        NextTurn();
+        //모든 순서가 끝나면 다음 턴으로 진행
+        while (turnPreferentially.Count != 0)
+        {
+            int nextId = turnPreferentially.Dequeue();
+            if (allStatus[nextId].IsDead) //죽은 객체라면 다음 순서로 넘김
+                continue;
+
+            StartCoroutine(TrunDelayCoroutine(nextId));
+            return;
+        }
     }
 
     public bool PossibleNextGame()
     {
         //한쪽 진영 전멸 시 게임종료
-        if (playerInfos.Count <= 0 || enemyInfos.Count <= 0) return false;
-
-        return true;
+        bool isPossible = (playerStatus.Count > 0 && enemyStatus.Count > 0);
+        return isPossible;
     }
 
     public void SettingPreferentially()
     {
         //LUK를 통한 순서 결정
         //오름차순으로 정렬
-        Information[] Infos = allInformations.ToArray();
-
-
+        Status[] Infos = allStatus.ToArray();
         for (int i = 0; i < Infos.Length - 1; ++i)
         {
             if (Infos[i].GetStatValue(Stat.LUK) < Infos[i + 1].GetStatValue(Stat.LUK))
             {
-                Information tempinfo = Infos[i];
+                Status tempinfo = Infos[i];
                 Infos[i] = Infos[i + 1];
                 Infos[i + 1] = tempinfo;
 
                 i = 0;
-                continue;
             }
         }
 
-        foreach (Information info in Infos)
+        foreach (Status info in Infos)
         {
             turnPreferentially.Enqueue(info.ID); 
         }
@@ -204,23 +185,29 @@ public class BattleManager : MonoBehaviour
 
     void GameOver()
     {
-        foreach (Information info in allInformations)
+        foreach (Status info in allStatus)
         {
-            if (!info.IsDead)
+            if (info.IsDead == false)
             {
                 info.victory = true;
             }
         }
 
-        if (playerInfos.Count == 0) loseUI.SetActive(true);
-        else winUI.SetActive(true);
+        if (playerStatus.Count == 0)
+        {
+            loseUI.SetActive(true);
+        }
+        else
+        {
+            winUI.SetActive(true);
+        }
 
-        RestartButton.SetActive(true);
+        restartButton.SetActive(true);
     }
 
     public void GamePlayAndStop(bool on)
     {
-        foreach (Information info in allInformations)
+        foreach (Status info in allStatus)
         {
             info.OnUpdate = on;
         }
@@ -231,39 +218,39 @@ public class BattleManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public Information[] GetTargets(PlayerType playertype)
+    public Status[] GetTargets(PlayerType playertype)
     {
-        return playertype == PlayerType.Player ? playerInfos.ToArray() : enemyInfos.ToArray();
+        if (playertype == PlayerType.Player)
+            return enemyStatus.ToArray();
+
+        return playerStatus.ToArray();
     }
 
-    public void DeadChracter(int characterNum)
+    public void DeadChracter(int id)
     {
-        Information deadCharacter = allInformations[characterNum];
+        Status deadCharacter = allStatus[id];
         deadCharacter.IsDead = true;
 
         //해당 진영 List에서 삭제
         if (deadCharacter.playerType == PlayerType.Player)
         {
             --playerCount;
-            playerInfos.Remove(deadCharacter);
+            playerStatus.Remove(deadCharacter);
         }
         else
         {
             --enemyCount;
-            enemyInfos.Remove(deadCharacter);
+            enemyStatus.Remove(deadCharacter);
         }
-
-        //Destroy(deadCharacter);
     }
 
-    IEnumerator TrunDelayCoroutine(int NextChracterNum)
+    IEnumerator TrunDelayCoroutine(int nextId)
     {
         GamePlayAndStop(false);
         Camera.main.GetComponent<CameraManager>().CameraBattleMode(false);
-        yield return new WaitForSeconds(TurnDelay);
+        yield return new WaitForSeconds(turnDelay);
 
-        //Camera.main.GetComponent<CameraController>().CameraBattleMode(true, allInformations[NextChracterNum].transform);
-        TurnChracter = NextChracterNum;
+        TurnChracter = nextId;
         GamePlayAndStop(true);
     }
 }

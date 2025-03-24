@@ -18,13 +18,11 @@ public class TurnCheckNode : ActionNode
 
     protected override State OnUpdate()
     {
-        if(!Info.victory && BattleManager.Instance.TurnChracter == Info.ID)
-        {
-            //자신의 턴일 시
-            OwnerBattle.turnIndigate.SetActive(true);
-            return State.Success;
-        }
+        if(Info.victory || BattleManager.Instance.TurnChracter != Info.ID)
+            return State.Failure;
 
-        return State.Failure;
+        //자신의 턴일 시
+        OwnerBattle.turnIndigate.SetActive(true);
+        return State.Success;
     }
 }

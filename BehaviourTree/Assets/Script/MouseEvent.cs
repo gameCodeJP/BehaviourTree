@@ -12,7 +12,7 @@ public class MouseEvent : MonoBehaviour
     private void Start()
     {
         StartPos = transform.position;
-        indexNum = GetComponent<Information>().indexNum;
+        indexNum = GetComponent<Status>().indexNum;
     }
 
     private void OnMouseDrag()
@@ -34,7 +34,7 @@ public class MouseEvent : MonoBehaviour
     {
         if (CharacterNum == -1)
         {
-            CharacterNum = GetComponent<Information>().ID;
+            CharacterNum = GetComponent<Status>().ID;
         }
 
         /*if (characterState.CurState == State.Battle)

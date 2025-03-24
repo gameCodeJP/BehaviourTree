@@ -15,11 +15,5 @@ public class GogleSheetManager : MonoBehaviour
         yield return www.SendWebRequest();
 
         string data = www.downloadHandler.text;
-        Debug.Log(data);
-
-       /* for ()
-        {
-            HeroStats.heroseStatDatas.Add();
-        }*/
     }
 }

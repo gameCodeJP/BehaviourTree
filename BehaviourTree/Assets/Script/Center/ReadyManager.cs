@@ -23,7 +23,7 @@ public class ReadyManager : MonoBehaviour
     [SerializeField] GameObject[] characterBase;
 
     [SerializeField] Transform[] startPos;
-    List<Information> readyCharacters = new ();
+    List<Status> readyCharacters = new ();
     bool[] OnIndex = new bool[5];
     int characterCount = 0;
 
@@ -41,7 +41,7 @@ public class ReadyManager : MonoBehaviour
         HeroseStatData heroseStatData = DataManager.Instance().GetHeroseStatData((int)name);
         //해당하는 prefab을 받는다.
         GameObject Character = Instantiate(characterBase[(int)heroseStatData.HeroseName]);
-        Information CharacterInfo = Character.GetComponent<Information>();
+        Status CharacterInfo = Character.GetComponent<Status>();
 
         readyCharacters.Add(CharacterInfo);
         CharacterInfo.skillDatas.AddRange(DataManager.Instance().GetSkillDatas((int)name));
@@ -67,7 +67,7 @@ public class ReadyManager : MonoBehaviour
     public void ChracterChangePosition(int chracterNum, Transform changeStartPosObj)
     {
         //바꾸길 원하는 객체 검색
-        Information info;
+        Status info;
         info = readyCharacters[chracterNum];
 
         OnIndex[chracterNum] = false;
@@ -92,7 +92,7 @@ public class ReadyManager : MonoBehaviour
         PlaceChraccter(changeIndex, info);
     }
 
-    public void PlaceChraccter(int idx, Information info)
+    public void PlaceChraccter(int idx, Status info)
     {
         OnIndex[idx] = true;
         readyCharacters[idx] = info;
